@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Master</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div id="theTitle">
+        <p>DND DICEMASTER</p>
+        <div id="separator"></div>
+    </div>
+    <div id="mainPage">
+        <div id="info">This dice was created to help the fellow DND player on their quest of having a good time with their palls. Instead of purchasing dices with multiple diferent faces, they can just use this one. Have fun!</div>
+        <div id="step1">STEP 1<br><br>Choose between what numbers your dice will be able to roll by clicking the numbers below. You need at least 2 numbers.</div>
+        <div id="numberChooser">
+            <button class="buttons"id="button1"onclick="changeMinMax(this)">1</button>
+            <hr id="line1" class="line">
+            <button class="buttons"id="button2"onclick="changeMinMax(this)">2</button>
+            <hr id="line2" class="line">
+            <button class="buttons"id="button3"onclick="changeMinMax(this)">3</button>
+            <hr id="line3" class="line">
+            <button class="buttons"id="button4"onclick="changeMinMax(this)">4</button>
+            <hr id="line4" class="line">
+            <button class="buttons"id="button5"onclick="changeMinMax(this)">5</button>
+            <hr id="line5" class="line">
+            <button class="buttons"id="button6"onclick="changeMinMax(this)">6</button>
+            <hr id="line6" class="line">
+            <button class="buttons"id="button7"onclick="changeMinMax(this)">7</button>
+            <hr id="line7" class="line">
+            <button class="buttons"id="button8"onclick="changeMinMax(this)">8</button>
+            <hr id="line8" class="line">
+            <button class="buttons"id="button9"onclick="changeMinMax(this)">9</button>
+            <hr id="line9" class="line">
+            <button class="buttons"id="button10"onclick="changeMinMax(this)">10</button>
+            <hr id="line10" class="line">
+            <button class="buttons"id="button11"onclick="changeMinMax(this)">11</button>
+            <hr id="line11" class="line">
+            <button class="buttons"id="button12"onclick="changeMinMax(this)">12</button>
+            <hr id="line12" class="line">
+            <button class="buttons"id="button13"onclick="changeMinMax(this)">13</button>
+            <hr id="line13" class="line">
+            <button class="buttons"id="button14"onclick="changeMinMax(this)">14</button>
+            <hr id="line14" class="line">
+            <button class="buttons"id="button15"onclick="changeMinMax(this)">15</button>
+            <hr id="line15" class="line">
+            <button class="buttons"id="button16"onclick="changeMinMax(this)">16</button>
+            <hr id="line16" class="line">
+            <button class="buttons"id="button17"onclick="changeMinMax(this)">17</button>
+            <hr id="line17" class="line">
+            <button class="buttons"id="button18"onclick="changeMinMax(this)">18</button>
+            <hr id="line18" class="line">
+            <button class="buttons"id="button19"onclick="changeMinMax(this)">19</button>
+            <hr id="line19" class="line">
+            <button class="buttons"id="button20"onclick="changeMinMax(this)">20</button>
+        </div>
+        
+        <div id="step2">STEP 2<br><br>Press the "Roll" button below to take your turn and roll the dice to find out how succesful your actions were. Good luck!</div>
+        <div id="rollingSpace">
+            <div id="rollButtonHolder">
+                <button id="rollButton" onclick="roll()">ROLL!</button>
+            </div>
+            <div id="dice">0</div>
+        </div>
+    </div>
+
+    <script>
+    var smallNumber=1,bigNumber=20;
+    var extra=0;
+    var leftPressed=false, wasEverPressed=false;
+    
+    function changeMinMax(pressedButton) {
+    let buttonNumber = parseInt(pressedButton.innerHTML);
+    let index = 0;
+    
+    if (buttonNumber < smallNumber) {
+        smallNumber = buttonNumber;
+        leftPressed=true;
+        wasEverPressed=true;
+    } 
+    else if (buttonNumber > bigNumber) {
+        bigNumber = buttonNumber;
+        leftPressed=false;
+        wasEverPressed=true;
+    } 
+    else if (buttonNumber > smallNumber && buttonNumber < bigNumber) {
+        if(wasEverPressed==false){
+        if(buttonNumber<10){
+            smallNumber=buttonNumber;
+            leftPressed=true;
+        }
+        else {
+            bigNumber=buttonNumber;
+        }
+        wasEverPressed=true;
+    }
+    else if(leftPressed==true){
+        bigNumber=buttonNumber;
+        leftPressed=false;
+    }
+    else if(leftPressed==false){
+        smallNumber=buttonNumber;
+        leftPressed=true;
+    }
+    }
+
+    for (index = 1; index <= 20; index++) {
+        document.getElementById("button" + index).style.backgroundColor = "white";
+        document.getElementById("button" + index).style.color="black";
+    }
+    for (index = 1; index <= 19; index++) {
+        document.getElementById("line" + index).style.backgroundColor = "white";
+    }
+    for (index = smallNumber; index <= bigNumber; index++) {
+        document.getElementById("button" + index).style.backgroundColor = "rgba(97, 2, 144, 1)";
+        document.getElementById("button" + index).style.color="white";
+    }
+    for (index = smallNumber; index < bigNumber; index++) {
+        document.getElementById("line" + index).style.backgroundColor = "rgba(97, 2, 144, 1)";
+    }
+}
+
+    function wait(milliseconds) {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    async function noSpamming() {
+            const button = document.getElementById("rollButton");
+
+            if (!button.disabled) {
+                button.disabled = true;
+                await wait(800);
+                button.disabled =false;
+            }
+        }
+
+    async function roll(){
+        let i;
+        const diceButton=document.getElementById("dice");
+
+        noSpamming();
+        for(i=0;i<=5;i++){
+            var randomNumber=Math.floor(Math.random()*(bigNumber-smallNumber+1))+smallNumber;
+            diceButton.innerHTML=randomNumber;
+            await wait(100);
+        }
+        diceButton.style.backgroundColor="#c4fdb5";
+        await wait(200);
+        diceButton.style.backgroundColor="#afff99";
+    }
+
+    </script>
+</body>
+</html>
